@@ -1,0 +1,13 @@
+---
+import {terimId} from '../lib/terim';
+interface Props { terimler: {ad: string; formul?: string; tanim: string}[] }
+const {terimler} = Astro.props;
+---
+{terimler.map((t) => (
+  <div popover id={terimId(t.ad)} class="terim-pop" role="dialog" aria-label={t.ad}>
+    <h3>{t.ad}</h3>
+    {t.formul && <span class="formul">{t.formul}</span>}
+    <p class="ince">{t.tanim}</p>
+    <button class="dugme kapat" type="button" popovertarget={terimId(t.ad)} popovertargetaction="hide">Tamam</button>
+  </div>
+))}

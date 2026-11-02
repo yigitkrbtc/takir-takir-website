@@ -1,0 +1,52 @@
+---
+import {getCollection} from 'astro:content';
+import Base from '../layouts/Base.astro';
+import {DERSLER, SITE_ADI, konuUrl} from '../lib/site';
+import {kurulus, webSitesi} from '../lib/seo';
+import '../styles/hub.css';
+
+const konular = (await getCollection('konu')).map((e) => e.data).sort((a, b) => b.guncelleme.localeCompare(a.guncelleme));
+const gunun = konular[0];
+const say = (sinav: string, slug: string) => konular.filter((k) => k.sinav === sinav && k.dersSlug === slug).length;
+const site = Astro.site!;
+---
+
+<Base baslik={`${SITE_ADI}: YKS konuları etkileşimli derslerle | TYT ve AYT`} aciklama="TYT ve AYT konularını önce tahmin ederek, görselle görerek ve flash kartlarla tekrar ederek öğren. Her bilgi kaynağıyla kontrol edilir." jsonld={[webSitesi(site), kurulus(site)]}>
+  <div class="kap genis">
+    <section class="kahraman">
+      <h1>YKS konuları,<br /><em>takır takır</em> akılda.</h1>
+      <p>Ezber değil, mantık. Her konu birkaç dakikalık bir ders: önce tahmin et, sonra gör, sonra kendini test et.</p>
+      <div class="adimlar3">
+        <div class="adim3"><b>1</b><div><strong>Tahmin et</strong><span>Ders başlamadan bir soru. Yanılmak da öğretir.</span></div></div>
+        <div class="adim3"><b>2</b><div><strong>Gör</strong><span>Tepkimeyi, grafiği, haritayı adım adım oynat.</span></div></div>
+        <div class="adim3"><b>3</b><div><strong>Test et</strong><span>Flash kartlar, bilmediğini tekrar getirir.</span></div></div>
+      </div>
+    </section>
+
+    {gunun && (
+      <a class="gunun" href={konuUrl(gunun)}>
+        <span class="etiket">Günün tuzağı · {gunun.sinav} {gunun.ders}</span>
+        <strong>{gunun.altBaslik}</strong>
+        <span class="ince">{gunun.konu}</span>
+        <span class="dugme ana git">Derse başla →</span>
+      </a>
+    )}
+
+    {(['TYT', 'AYT'] as const).map((s) => (
+      <section class="sinav-bloku">
+        <h2><a href={`/${s.toLowerCase()}/`} style="text-decoration:none">{s}</a></h2>
+        <p>{s === 'TYT' ? 'Temeli anla, karıştırdığını ayırt et.' : 'Mantığını kavra, bağlantı kur.'}</p>
+        <div class="ders-izgara">
+          {DERSLER[s].map((d) => {
+            const n = say(s, d.slug);
+            return n ? (
+              <a class="ders-kart" href={`/${s.toLowerCase()}/${d.slug}/`}><strong>{d.ad}</strong><span>{n} konu</span></a>
+            ) : (
+              <div class="ders-kart yakinda"><strong>{d.ad}</strong><span>yakında</span></div>
+            );
+          })}
+        </div>
+      </section>
+    ))}
+  </div>
+</Base>

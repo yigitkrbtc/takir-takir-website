@@ -1,0 +1,7 @@
+---
+import {parcala, terimId} from '../lib/terim';
+interface Props { metin: string; terimler: string[] }
+const {metin, terimler} = Astro.props;
+const parcalar = parcala(metin, terimler);
+---
+{parcalar.map((p) => (p.terim ? <button type="button" class="terim" popovertarget={terimId(p.terim)}>{p.metin}</button> : p.metin))}

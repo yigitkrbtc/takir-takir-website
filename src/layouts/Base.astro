@@ -1,0 +1,85 @@
+---
+import '../styles/global.css';
+import {SITE_ADI} from '../lib/site';
+
+interface Props {
+  baslik: string;
+  aciklama: string;
+  jsonld?: object[];
+  ilerleme?: boolean;
+  noindex?: boolean;
+}
+const {baslik, aciklama, jsonld = [], ilerleme = false, noindex = false} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{baslik}</title>
+    <meta name="description" content={aciklama} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#0e1117" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content={SITE_ADI} />
+    <meta property="og:title" content={baslik} />
+    <meta property="og:description" content={aciklama} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="tr_TR" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <script is:inline>
+      try {
+        const t = localStorage.getItem('tema');
+        if (t) document.documentElement.dataset.tema = t;
+      } catch {}
+    </script>
+    {jsonld.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+  </head>
+  <body>
+    <header class="ust">
+      <div class="kap genis">
+        <a class="logo" href="/" aria-label={`${SITE_ADI} ana sayfa`}><span class="logo-im">TT</span>{SITE_ADI}</a>
+        <nav aria-label="Ana menü">
+          <a href="/tyt/">TYT</a>
+          <a href="/ayt/">AYT</a>
+          <button class="tema-dugme" id="tema" type="button" aria-label="Açık ya da koyu tema">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg>
+          </button>
+        </nav>
+      </div>
+      {ilerleme && <div class="ilerleme" id="ilerleme" aria-hidden="true"></div>}
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="alt">
+      <div class="kap genis">
+        <p><strong>{SITE_ADI}</strong>: YKS konularını kısa videolar, etkileşimli dersler ve flash kartlarla anlatır. Her bilgi kaynağıyla kontrol edilir.</p>
+        <p>TYT ve AYT, ÖSYM'nin sınavlarıdır. Bu site ÖSYM ya da MEB ile bağlantılı değildir.</p>
+      </div>
+    </footer>
+    <script is:inline>
+      document.getElementById('tema')?.addEventListener('click', () => {
+        const d = document.documentElement;
+        const acik = d.dataset.tema !== 'acik';
+        d.dataset.tema = acik ? 'acik' : 'koyu';
+        try { localStorage.setItem('tema', d.dataset.tema); } catch {}
+      });
+      const bar = document.getElementById('ilerleme');
+      if (bar) {
+        const f = () => {
+          const h = document.documentElement;
+          const p = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
+          bar.style.transform = `scaleX(${Math.min(1, p)})`;
+        };
+        addEventListener('scroll', f, {passive: true});
+        f();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,185 @@
+{
+  "id": "tyt-kimya-asit-ve-karbonat",
+  "sinav": "TYT",
+  "ders": "Kimya",
+  "dersSlug": "kimya",
+  "unite": "Asitler, Bazlar ve Tuzlar",
+  "konu": "Asit ve karbonat tepkimesi",
+  "baslik": "Asit ve karbonat tepkimesi: kabarcıklar neden CO₂? (TYT Kimya)",
+  "altBaslik": "Kabarcıklar neden hidrojen değil?",
+  "sure": 6,
+  "slug": "asit-ve-karbonat",
+  "seviye": "10. sınıf",
+  "onBilgi": [],
+  "sonraki": [],
+  "aramalar": [
+    "asit karbonat tepkimesi",
+    "asit ile karbonat tepkimesinde hangi gaz çıkar",
+    "sirke yumurta kabuğu tepkimesi",
+    "karbonik asit neden ayrışır",
+    "tyt kimya asit baz tepkimeleri"
+  ],
+  "ozet": "Asit, karbonatla tepkimeye girince tuz, su ve karbondioksit (CO₂) oluşur. Çıkan gaz hidrojen değil CO₂'dir: gazın karbonu ve oksijeni karbonattan gelir, asidin hidrojeni suya gider. Sirkeye bırakılan yumurtanın kabuğu bu yüzden köpürerek çözünür.",
+  "tahmin": {
+    "soru": "Sirkeye bırakılan çiğ yumurtanın kabuğunda kabarcıklar belirir. Sence bu kabarcıklar hangi gaz?",
+    "secenekler": ["Hidrojen (H₂)", "Karbondioksit (CO₂)", "Oksijen (O₂)"],
+    "dogru": 1,
+    "aciklama": "Çoğu kişi hidrojen der, çünkü \"asit + metal → hidrojen gazı\" kuralını duymuştur. Ama yumurta kabuğu metal değil, kalsiyum karbonattır. Gaz, kabuğun kendi atomlarından oluşur: CO₂."
+  },
+  "gorsel": {
+    "kit": "tepkime",
+    "baslik": "Kabuk sirkede adım adım nereye gidiyor?",
+    "adimlar": [
+      {
+        "baslik": "Başlangıç: kabuk ve sirke",
+        "denklem": false,
+        "sol": [{"f": "CaCO₃", "ad": "kalsiyum karbonat"}],
+        "sag": [{"f": "CH₃COOH", "ad": "asetik asit"}],
+        "not": "Yumurta kabuğu kalsiyum karbonattan oluşur. Sirkenin içindeki asit, asetik asittir."
+      },
+      {
+        "baslik": "Asit suda H⁺ bırakır",
+        "sol": [{"f": "CH₃COOH", "ad": "asetik asit"}],
+        "sag": [{"f": "H⁺", "ad": "hidrojen iyonu"}, {"f": "CH₃COO⁻", "ad": "asetat"}],
+        "not": "Asit, suda hidrojen iyonu (H⁺) veren maddedir. Asetik asit zayıf bir asittir; geriye asetat iyonu kalır."
+      },
+      {
+        "baslik": "Karbonat iki H⁺ yakalar",
+        "sol": [{"f": "CO₃²⁻", "ad": "karbonat"}, {"f": "2H⁺", "ad": "hidrojen iyonu"}],
+        "sag": [{"f": "H₂CO₃", "ad": "karbonik asit"}],
+        "not": "Karbonatın yükü −2, her hidrojen iyonununki +1. İki H⁺ gelince toplam yük sıfır olur: karbonik asit oluşur.",
+        "yukGoster": true
+      },
+      {
+        "baslik": "Karbonik asit hemen dağılır",
+        "sol": [{"f": "H₂CO₃", "ad": "karbonik asit"}],
+        "sag": [{"f": "H₂O", "ad": "su"}, {"f": "CO₂", "ad": "karbondioksit"}],
+        "not": "Karbonik asit dayanıksızdır, suda hızla su ve karbondioksite ayrışır. Kabarcıklar bu CO₂'dir. Asidin hidrojeni suya gitti."
+      },
+      {
+        "baslik": "Geriye çözünen bir tuz kalır",
+        "sol": [{"f": "Ca²⁺", "ad": "kalsiyum iyonu"}, {"f": "2CH₃COO⁻", "ad": "asetat"}],
+        "sag": [{"f": "Ca(CH₃COO)₂", "ad": "kalsiyum asetat"}],
+        "not": "Kalsiyum, bekleyen asetatla kalsiyum asetat tuzunu oluşturur. Bu tuz suda çözünür, kabuk bu yüzden gözden kaybolur."
+      },
+      {
+        "baslik": "Hepsi bir arada",
+        "sol": [{"f": "CaCO₃", "ad": "kalsiyum karbonat"}, {"f": "2CH₃COOH", "ad": "asetik asit"}],
+        "sag": [{"f": "Ca(CH₃COO)₂", "ad": "kalsiyum asetat"}, {"f": "H₂O", "ad": "su"}, {"f": "CO₂", "ad": "karbondioksit"}],
+        "not": "Asit + karbonat → tuz + su + karbondioksit. Atomları say: iki taraf da eşit."
+      }
+    ]
+  },
+  "kural": {
+    "cumle": "Asit + karbonat → tuz + su + karbondioksit",
+    "formul": "CaCO₃ + 2CH₃COOH → Ca(CH₃COO)₂ + H₂O + CO₂",
+    "parcalar": [
+      {"ifade": "CaCO₃", "anlam": "Kalsiyum karbonat: yumurta kabuğu, mermer, kireç taşı."},
+      {"ifade": "2CH₃COOH", "anlam": "Asetik asit: sirkedeki asit. İki tane gerekir, çünkü karbonat iki H⁺ alır."},
+      {"ifade": "Ca(CH₃COO)₂", "anlam": "Kalsiyum asetat: oluşan tuz. Suda çözünür."},
+      {"ifade": "H₂O", "anlam": "Su: asidin hidrojeni buraya gider."},
+      {"ifade": "CO₂", "anlam": "Karbondioksit: gördüğün kabarcıklar."}
+    ]
+  },
+  "neden": [
+    {
+      "baslik": "Gaz, giren maddelerin atomlarından oluşur",
+      "metin": "Tepkimede atom yoktan var olmaz. Çıkan gazın içinde ne varsa, girenlerde de o vardır. Kalsiyum karbonatta karbon ve oksijen bulunur. CO₂'nin malzemesi tam olarak budur."
+    },
+    {
+      "baslik": "Asidin hidrojeni gaz olmaz, suya gider",
+      "metin": "Asit, hidrojen iyonu verir. Bu iyonlar karbonata bağlanıp karbonik asit oluşturur. Karbonik asit dağılınca hidrojenler suyun içinde kalır. Bu yüzden ortada hidrojen gazı yoktur."
+    },
+    {
+      "baslik": "Kabuk neden kaybolur?",
+      "metin": "Kalsiyum, asetat iyonlarıyla kalsiyum asetat tuzunu oluşturur. Bu tuz suda iyi çözünür. Katı kabuk, çözünen bir tuza dönüştüğü için gözden kaybolur."
+    }
+  ],
+  "sikHata": {
+    "yanlis": "Asit varsa çıkan gaz her zaman hidrojendir.",
+    "dogru": "Hidrojen gazı, asit aktif bir metalle (çinko, magnezyum gibi) tepkimeye girince çıkar. Asit karbonatla tepkimeye girince çıkan gaz CO₂'dir.",
+    "neden": "Gazın atomları girenlerden gelir. Karbonat, karbon ve oksijen getirir. Asidin hidrojeni ise suya bağlanır."
+  },
+  "ornek": {
+    "soru": "Aşağıdaki tepkimelerin hangisinde karbondioksit (CO₂) gazı açığa çıkar?",
+    "secenekler": ["Zn + 2HCl", "Na₂CO₃ + 2HCl", "NaOH + HCl", "Cu + HCl"],
+    "dogru": 1,
+    "adimlar": [
+      {"metin": "CO₂ çıkacaksa, girenlerde karbon olmalı. Önce karbonu ara."},
+      {"metin": "Karbon yalnızca ikinci seçenekte var: sodyum karbonat (Na₂CO₃). Bu bir asit + karbonat tepkimesi."},
+      {"metin": "Diğerlerini ele: çinko aktif metaldir, hidroklorik asitle H₂ verir. NaOH + HCl nötrleşmedir: tuz + su, gaz yok. Bakır yarı soy metaldir, HCl ile hidrojen gazı vermez."},
+      {"metin": "Kuralı uygula: asit + karbonat → tuz + su + CO₂.", "formul": "Na₂CO₃ + 2HCl → 2NaCl + H₂O + CO₂"}
+    ],
+    "puf": "Soruda karbonat (CO₃) ya da bikarbonat (HCO₃) görürsen, çıkan gaz CO₂'dir."
+  },
+  "kartlar": [
+    {"id": "k1", "tur": "formul", "on": "Asit + karbonat → ?", "arka": "Tuz + su + karbondioksit (CO₂)."},
+    {"id": "k2", "tur": "hata", "on": "Asitle her tepkimede hidrojen gazı mı çıkar?", "arka": "Hayır. H₂, asit aktif metalle tepkimeye girince çıkar. Asit karbonatla tepkimeye girince çıkan gaz CO₂'dir."},
+    {"id": "k3", "tur": "tanim", "on": "Sirkedeki asidin adı ve formülü?", "arka": "Asetik asit, CH₃COOH. Zayıf bir asittir; suda H⁺ verir, geriye asetat (CH₃COO⁻) kalır."},
+    {"id": "k4", "tur": "formul", "on": "Karbonat iyonunun formülü ve yükü?", "arka": "CO₃²⁻. Yükü −2, bu yüzden iki H⁺ alır."},
+    {"id": "k5", "tur": "tanim", "on": "Karbonik asit (H₂CO₃) neden kabarcık çıkarır?", "arka": "Dayanıksızdır; hızla su (H₂O) ve karbondioksite (CO₂) ayrışır."},
+    {"id": "k6", "tur": "uygulama", "on": "Yumurta kabuğu sirkede neden kaybolur?", "arka": "Kalsiyum karbonat asetik asitle tepkimeye girer. Oluşan kalsiyum asetat suda çözünür."},
+    {"id": "k7", "tur": "formul", "on": "Na₂CO₃ + 2HCl → ?", "arka": "2NaCl + H₂O + CO₂"},
+    {"id": "k8", "tur": "uygulama", "on": "Gazın atomlarını nereden bulursun?", "arka": "Girenlerden. CO₂ çıkıyorsa girenlerde karbon olmalı: karbonat ya da bikarbonat."}
+  ],
+  "terimler": [
+    {"ad": "asetik asit", "formul": "CH₃COOH", "tanim": "Sirkedeki asit. Zayıf bir asittir."},
+    {"ad": "asetat", "formul": "CH₃COO⁻", "tanim": "Asetik asit H⁺ verince geriye kalan, −1 yüklü iyon."},
+    {"ad": "kalsiyum karbonat", "formul": "CaCO₃", "tanim": "Yumurta kabuğu, mermer ve kireç taşının ana maddesi."},
+    {"ad": "karbonat", "formul": "CO₃²⁻", "tanim": "Bir karbon ve üç oksijenden oluşan, −2 yüklü iyon."},
+    {"ad": "bikarbonat", "formul": "HCO₃⁻", "tanim": "Karbonatın bir H⁺ almış hâli. Asitle CO₂ verir."},
+    {"ad": "karbonik asit", "formul": "H₂CO₃", "tanim": "Karbonat iki H⁺ alınca oluşan dayanıksız asit."},
+    {"ad": "kalsiyum asetat", "formul": "Ca(CH₃COO)₂", "tanim": "Kalsiyum ile asetattan oluşan, suda çözünen tuz."},
+    {"ad": "karbondioksit", "formul": "CO₂", "tanim": "Tepkimede kabarcık olarak çıkan gaz."},
+    {"ad": "hidrojen iyonu", "formul": "H⁺", "tanim": "Asidin suya verdiği, +1 yüklü iyon."},
+    {"ad": "hidrojen gazı", "formul": "H₂", "tanim": "Asit aktif metalle tepkimeye girince çıkan gaz."},
+    {"ad": "kalsiyum iyonu", "formul": "Ca²⁺", "tanim": "+2 yüklü kalsiyum iyonu."},
+    {"ad": "sodyum karbonat", "formul": "Na₂CO₃", "tanim": "Çamaşır sodası. Asitle CO₂ verir."},
+    {"ad": "hidroklorik asit", "formul": "HCl", "tanim": "Kuvvetli bir asit."}
+  ],
+  "iddialar": [
+    {
+      "id": "i1", "tur": "kural", "yontem": "kaynak", "durum": "dogru",
+      "metin": "Asit + karbonat → tuz + su + CO₂",
+      "kaynak": {"url": "https://chem.libretexts.org/Courses/University_of_California_Davis/UCDemos/Chalk_Bubbles", "ad": "LibreTexts: Chalk Bubbles", "alinti": "CaCO3 + 2 H(C2H3O2) → CO2 + H2O + Ca(C2H3O2)2", "erisim": "2026-11-02"}
+    },
+    {
+      "id": "i2", "tur": "formul", "yontem": "hesap", "durum": "dogru",
+      "metin": "Net denklem atom ve yük bakımından dengelidir.",
+      "hesap": "CaCO₃ + 2CH₃COOH → Ca(CH₃COO)₂ + H₂O + CO₂"
+    },
+    {
+      "id": "i3", "tur": "bilgi", "yontem": "kaynak", "durum": "dogru",
+      "metin": "Yumurta kabuğundaki kalsiyum karbonat sirkeyle tepkimeye girip CO₂ kabarcıkları oluşturur.",
+      "kaynak": {"url": "https://van.physics.illinois.edu/ask/listing/461", "ad": "Illinois Physics Van", "alinti": "Calcium carbonate in the egg shell reacts with vinegar to form carbon dioxide (can be seen as bubbles in the vinegar).", "erisim": "2026-11-02"}
+    },
+    {
+      "id": "i4", "tur": "bilgi", "yontem": "kaynak", "durum": "dogru",
+      "metin": "Asetik asit zayıf bir asittir; H⁺ verince geriye asetat kalır.",
+      "kaynak": {"url": "https://en.wikipedia.org/wiki/Acetic_acid", "ad": "Wikipedia: Acetic acid", "alinti": "Acetic acid is a weak monoprotic acid. … Acetate is the ion resulting from loss of H+ from acetic acid.", "erisim": "2026-11-02"}
+    },
+    {
+      "id": "i5", "tur": "bilgi", "yontem": "kaynak", "durum": "dogru",
+      "metin": "Karbonik asit suda hızla su ve CO₂'ye ayrışır.",
+      "kaynak": {"url": "https://en.wikipedia.org/wiki/Carbonic_acid", "ad": "Wikipedia: Carbonic acid", "alinti": "The molecule rapidly converts to water and carbon dioxide in the presence of water.", "erisim": "2026-11-02"}
+    },
+    {
+      "id": "i6", "tur": "bilgi", "yontem": "kaynak", "durum": "dogru",
+      "metin": "Kalsiyum asetat suda çözünür.",
+      "kaynak": {"url": "https://en.wikipedia.org/wiki/Calcium_acetate", "ad": "Wikipedia: Calcium acetate", "alinti": "Solubility in water: 37.4 g/100 mL (0 °C)", "erisim": "2026-11-02"}
+    },
+    {
+      "id": "i7", "tur": "hata", "yontem": "kaynak", "durum": "dogru",
+      "metin": "Aktif metaller asitle H₂ verir; yarı soy metaller (bakır gibi) vermez.",
+      "kaynak": {"url": "https://www.tahtaapp.com/blog/dersler/soy-ve-yari-soy-metaller-nedir-asit-ve-bazlarla-tepkimeleri", "ad": "Tahta: Soy ve yarı soy metaller", "alinti": "Aktif metaller seyreltik asitle bile kolayca tepkir ve hidrojen gazı çıkarır; yarı soy metaller bunu yapmaz.", "erisim": "2026-11-02"}
+    },
+    {
+      "id": "i8", "tur": "cevap", "yontem": "hesap", "durum": "dogru",
+      "metin": "Örnek sorunun cevabı: Na₂CO₃ + 2HCl (dengeli denklemle CO₂ verir).",
+      "hesap": "Na₂CO₃ + 2HCl → 2NaCl + H₂O + CO₂"
+    }
+  ],
+  "medya": {"seriNo": 4},
+  "surum": 1,
+  "guncelleme": "2026-11-02"
+}

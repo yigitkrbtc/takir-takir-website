@@ -34,6 +34,7 @@ Bu repoda her iş şu altı gözle yapılır: pazarlama uzmanı, SEO ve GEO uzma
 - İçeriği olmayan ders sayfası üretilmez; içeriği olmayan sınav sayfası `noindex` ve sitemap dışı.
 - `SITE_URL` verilmezse önizleme: her sayfa `noindex`, robots.txt sitemap göstermez. Yayın ortamında (alan adı) `SITE_URL` build değişkeni olarak verilir.
 - Kısa link: video seri numarası → `/t<no>` (TYT), `/a<no>` (AYT).
+- Arayüz ve tasarım ayrıntı kuralları: `.claude/rules/web-tasarim.md` (yalnız site dosyaları açılınca yüklenir).
 - Tasarım dili videoyla aynı: koyu zemin #0E1117, sarı #F5B83D, beyaz #F5F1E8; açık tema var. Font Plus Jakarta Sans (sitede barındırılır). Logo: iki klavye tuşu + "TakırTakır". Mobil önce, gövde 18 px, dokunma hedefi ≥ 48 px.
 - Tarayıcı depolaması yalnız `src/lib/depo.ts` üzerinden.
 - Bağımlılık sürümleri tam sabit (`--save-exact`), en az iki haftalık sürüm.

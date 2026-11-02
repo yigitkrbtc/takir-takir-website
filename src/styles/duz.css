@@ -1,0 +1,8 @@
+/* Düz metin sayfaları: hakkında, gizlilik */
+.duz { padding-top: 32px; }
+.duz h1 { font-size: clamp(32px, 7vw, 44px); font-weight: 800; letter-spacing: -0.03em; }
+.duz h2 { font-size: 22px; font-weight: 800; margin: 32px 0 10px; scroll-margin-top: 80px; }
+.duz ul, .duz ol { padding-left: 22px; margin: 0 0 0.9em; }
+.duz li { margin-bottom: 8px; }
+.duz li::marker { color: var(--vurgu); font-weight: 800; }
+.duz a { color: var(--vurgu); }

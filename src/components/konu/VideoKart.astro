@@ -1,0 +1,29 @@
+---
+import type {Konu} from '../../konu/schema';
+import {HESAPLAR} from '../../lib/site';
+interface Props { k: Konu }
+const {k} = Astro.props;
+const hesap = HESAPLAR[k.sinav];
+const linkler = [
+  ['TikTok', hesap.tiktok],
+  ['YouTube', hesap.youtube],
+  ['Instagram', hesap.instagram],
+].filter((x): x is [string, string] => Boolean(x[1]));
+---
+<section class="bolum" id="video" aria-labelledby="b-video">
+  <div class="kart video-kart">
+    <div>
+      <h2 id="b-video">Bu konunun kısa videosu</h2>
+      {k.medya.youtube ? (
+        <p class="ince">Aynı konu, kısa videoda.</p>
+      ) : (
+        <p class="ince">Video yakında {hesap.ad} hesabında{k.medya.seriNo ? ` (TUZAK #${k.medya.seriNo})` : ''}.</p>
+      )}
+    </div>
+    {linkler.length > 0 && (
+      <div class="hesap-linkleri">
+        {linkler.map(([ad, url]) => <a class="dugme" href={url} rel="me noopener">{ad}</a>)}
+      </div>
+    )}
+  </div>
+</section>

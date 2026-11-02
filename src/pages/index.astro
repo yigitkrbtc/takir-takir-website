@@ -1,11 +1,12 @@
 ---
-import {getCollection} from 'astro:content';
 import Base from '../layouts/Base.astro';
-import {DERSLER, SITE_ADI, konuUrl} from '../lib/site';
+import {DERSLER, SITE_ADI} from '../lib/site';
 import {kurulus, webSitesi} from '../lib/seo';
+import {tumKonular} from '../lib/konular';
+import {dersYolu, konuUrl, sinavYolu} from '../konu/yol';
 import '../styles/hub.css';
 
-const konular = (await getCollection('konu')).map((e) => e.data).sort((a, b) => b.guncelleme.localeCompare(a.guncelleme));
+const konular = await tumKonular();
 const gunun = konular[0];
 const say = (sinav: string, slug: string) => konular.filter((k) => k.sinav === sinav && k.dersSlug === slug).length;
 const site = Astro.site!;
@@ -34,13 +35,13 @@ const site = Astro.site!;
 
     {(['TYT', 'AYT'] as const).map((s) => (
       <section class="sinav-bloku">
-        <h2><a href={`/${s.toLowerCase()}/`} style="text-decoration:none">{s}</a></h2>
+        <h2><a href={sinavYolu(s)} style="text-decoration:none">{s}</a></h2>
         <p>{s === 'TYT' ? 'Temeli anla, karıştırdığını ayırt et.' : 'Mantığını kavra, bağlantı kur.'}</p>
         <div class="ders-izgara">
           {DERSLER[s].map((d) => {
             const n = say(s, d.slug);
             return n ? (
-              <a class="ders-kart" href={`/${s.toLowerCase()}/${d.slug}/`}><strong>{d.ad}</strong><span>{n} konu</span></a>
+              <a class="ders-kart" href={dersYolu({sinav: s, dersSlug: d.slug})}><strong>{d.ad}</strong><span>{n} konu</span></a>
             ) : (
               <div class="ders-kart yakinda"><strong>{d.ad}</strong><span>yakında</span></div>
             );

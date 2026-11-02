@@ -1,0 +1,18 @@
+---
+// Ders bittiğinde sonraki adım: önce bilinmesi gereken, sıradaki konu; yoksa dersin diğer konuları.
+import type {Konu} from '../../konu/schema';
+import {dersYolu, konuUrl} from '../../konu/yol';
+interface Props { k: Konu; hepsi: Konu[] }
+const {k, hepsi} = Astro.props;
+const bul = (ids: string[]) => hepsi.filter((x) => ids.includes(x.id));
+const onBilgi = bul(k.onBilgi);
+const sonraki = bul(k.sonraki);
+---
+<nav class="bolum ders-sonu" aria-labelledby="b-son">
+  <h2 id="b-son">Sırada ne var?</h2>
+  <div class="bagli">
+    {onBilgi.map((x) => <a class="kart bagli-kart" href={konuUrl(x)}><span class="ince kucuk">Önce bunu bil</span>{x.konu}</a>)}
+    {sonraki.map((x) => <a class="kart bagli-kart vurgulu" href={konuUrl(x)}><span class="ince kucuk">Sıradaki konu</span>{x.konu}</a>)}
+    <a class="kart bagli-kart" href={dersYolu(k)}><span class="ince kucuk">Tüm konular</span>{k.sinav} {k.ders}</a>
+  </div>
+</nav>

@@ -1,0 +1,24 @@
+---
+// Kaynaklar ve doğrulama: her kilit bilginin kaynağı ya da hesap yöntemi, son güncelleme tarihi.
+import type {Konu} from '../../konu/schema';
+interface Props { k: Konu }
+const {k} = Astro.props;
+const dogrular = k.iddialar.filter((d) => d.durum === 'dogru');
+const tarih = (t: string) => new Date(t).toLocaleDateString('tr-TR', {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'}); // build makinesinin saat dilimi günü kaydırmasın
+---
+<section class="bolum kaynaklar" id="kaynaklar" aria-labelledby="b-kaynak">
+  <h2 id="b-kaynak">Kaynaklar ve doğrulama</h2>
+  <p class="ince kucuk">
+    Bu sayfadaki {k.iddialar.length} kilit bilgi tek tek kontrol edildi. Denklemler atom ve yük dengesi için kodla hesaplandı.
+    Yayın: <time datetime={k.yayin}>{tarih(k.yayin)}</time>{k.guncelleme !== k.yayin && <>. Son güncelleme: <time datetime={k.guncelleme}>{tarih(k.guncelleme)}</time></>}.
+    <a href="/hakkinda/#yontem">Nasıl doğruluyoruz?</a>
+  </p>
+  <ul>
+    {dogrular.map((d) => (
+      <li>
+        <span>{d.metin}</span>
+        {d.kaynak ? <a href={d.kaynak.url} rel="noopener">{d.kaynak.ad}</a> : <span class="ince">denklem dengesi hesaplandı</span>}
+      </li>
+    ))}
+  </ul>
+</section>

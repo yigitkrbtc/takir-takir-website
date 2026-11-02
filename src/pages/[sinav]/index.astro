@@ -1,6 +1,7 @@
 ---
-import {getCollection} from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import {tumKonular} from '../../lib/konular';
+import {dersYolu, sinavYolu} from '../../konu/yol';
 import {DERSLER, SITE_ADI} from '../../lib/site';
 import {kirinti} from '../../lib/seo';
 import '../../styles/hub.css';
@@ -9,13 +10,13 @@ export function getStaticPaths() {
   return [{params: {sinav: 'tyt'}, props: {sinav: 'TYT' as const}}, {params: {sinav: 'ayt'}, props: {sinav: 'AYT' as const}}];
 }
 const {sinav} = Astro.props;
-const konular = (await getCollection('konu')).map((e) => e.data).filter((k) => k.sinav === sinav);
+const konular = (await tumKonular()).filter((k) => k.sinav === sinav);
 const say = (slug: string) => konular.filter((k) => k.dersSlug === slug).length;
 const vaat = sinav === 'TYT' ? 'Temeli anla, karıştırdığını ayırt et, hızlı hatırla.' : 'Mantığını kavra, bağlantı kur, derinleş.';
 const site = Astro.site!;
 ---
 
-<Base noindex={konular.length === 0} baslik={`${sinav} konu anlatımı, flash kartlar ve çözümlü örnekler | ${SITE_ADI}`} aciklama={`${sinav} konuları etkileşimli derslerle: önce tahmin et, görselle anla, flash kartlarla tekrar et. ${vaat}`} jsonld={[kirinti(site, [{ad: SITE_ADI, yol: '/'}, {ad: sinav, yol: `/${sinav.toLowerCase()}/`}])]}>
+<Base noindex={konular.length === 0} baslik={`${sinav} konu anlatımı, flash kartlar ve çözümlü örnekler | ${SITE_ADI}`} aciklama={`${sinav} konuları etkileşimli derslerle: önce tahmin et, görselle anla, flash kartlarla tekrar et. ${vaat}`} jsonld={[kirinti(site, [{ad: SITE_ADI, yol: '/'}, {ad: sinav, yol: sinavYolu(sinav)}])]}>
   <div class="kap genis">
     <header class="hub-bas">
       <span class="rozet vurgu">{sinav}</span>
@@ -26,7 +27,7 @@ const site = Astro.site!;
       {DERSLER[sinav].map((d) => {
         const n = say(d.slug);
         return n ? (
-          <a class="ders-kart" href={`/${sinav.toLowerCase()}/${d.slug}/`}><strong>{d.ad}</strong><span>{n} konu</span></a>
+          <a class="ders-kart" href={dersYolu({sinav, dersSlug: d.slug})}><strong>{d.ad}</strong><span>{n} konu</span></a>
         ) : (
           <div class="ders-kart yakinda" aria-disabled="true"><strong>{d.ad}</strong><span>yakında</span></div>
         );

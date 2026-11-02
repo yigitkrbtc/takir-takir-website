@@ -31,12 +31,18 @@
 /* Tepkime görseli */
 .tepkime { padding: 20px 16px; overflow: hidden; }
 .tepkime-ust { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 14px; }
-.tepkime-ust h3 { font-size: 17px; }
-.adim-noktalari { list-style: none; display: flex; gap: 6px; padding: 0; margin: 0 0 18px; }
+.lejant { display: flex; gap: 12px; color: var(--yazi-2); }
+.lj { display: inline-flex; align-items: center; gap: 6px; }
+.lj::before { content: ''; width: 12px; height: 12px; border-radius: 4px; border: 1.5px solid; }
+.lj.iyon::before { border-color: var(--mavi); background: var(--mavi-zemin); }
+.lj.gaz::before { border-color: var(--iyi); background: var(--iyi-zemin); }
+/* Adım noktaları: çizgi 6 px, dokunma alanı 48 px yükseklikte */
+.adim-noktalari { list-style: none; display: flex; gap: 6px; padding: 0; margin: -16px 0 2px; }
 .adim-noktalari li { flex: 1; }
-.adim-noktalari button { width: 100%; height: 6px; border-radius: 6px; border: 0; padding: 0; background: var(--cizgi); transition: background 0.3s; }
-.adim-noktalari button.gecti { background: color-mix(in srgb, var(--vurgu) 45%, var(--cizgi)); }
-.adim-noktalari button.aktif { background: var(--vurgu); }
+.adim-noktalari button { width: 100%; height: 48px; border: 0; padding: 0; background: none; display: grid; align-items: center; }
+.adim-noktalari button::before { content: ''; height: 6px; border-radius: 6px; background: var(--cizgi); transition: background 0.3s; }
+.adim-noktalari button.gecti::before { background: color-mix(in srgb, var(--vurgu) 45%, var(--cizgi)); }
+.adim-noktalari button.aktif::before { background: var(--vurgu); }
 .sahne { min-height: 300px; display: flex; flex-direction: column; }
 .adim-baslik { font-size: 21px; font-weight: 800; margin-bottom: 18px; animation: girdi 0.35s ease both; }
 .denklem { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 8px; padding: 22px 8px; border-radius: 16px; background: var(--bg-2); border: 1px dashed var(--cizgi); }
@@ -70,7 +76,7 @@
 
 /* Çözümlü örnek */
 .once-dene { margin-top: 14px; color: var(--yazi-2); font-size: 15px; }
-.metin-dugme { border: 0; background: none; padding: 0 0 0 4px; color: var(--vurgu); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.metin-dugme { border: 0; background: none; padding: 12px 8px; margin: -12px 0; min-height: 48px; color: var(--vurgu); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .cozum { list-style: none; padding: 0; margin: 18px 0 14px; display: grid; gap: 12px; }
 .cozum-adim { display: flex; gap: 12px; animation: girdi 0.35s ease both; }
 .cozum-no { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--kart-2); border: 1px solid var(--cizgi); font-weight: 800; font-size: 14px; margin-top: 2px; }

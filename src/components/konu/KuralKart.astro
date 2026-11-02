@@ -1,0 +1,17 @@
+---
+import type {Konu} from '../../konu/schema';
+interface Props { kural: Konu['kural'] }
+const {kural} = Astro.props;
+---
+<div class="kart kural">
+  <p class="kural-cumle">{kural.cumle}</p>
+  <p class="kural-formul formul">{kural.formul}</p>
+  <dl class="parcalar">
+    {kural.parcalar.map((p) => (
+      <div>
+        <dt class="formul">{p.ifade}</dt>
+        <dd>{p.anlam}</dd>
+      </div>
+    ))}
+  </dl>
+</div>

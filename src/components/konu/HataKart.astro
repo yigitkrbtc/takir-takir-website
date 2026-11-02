@@ -1,0 +1,11 @@
+---
+import Metin from '../Metin.astro';
+import type {Konu} from '../../konu/schema';
+interface Props { hata: Konu['sikHata']; terimler: string[] }
+const {hata, terimler} = Astro.props;
+---
+<div class="hata">
+  <div class="hata-satir yanlis"><span class="hata-ikon" aria-hidden="true">✗</span><div><strong>Yanlış</strong><p>{hata.yanlis}</p></div></div>
+  <div class="hata-satir dogru"><span class="hata-ikon" aria-hidden="true">✓</span><div><strong>Doğru</strong><p><Metin metin={hata.dogru} terimler={terimler} /></p></div></div>
+  <p class="hata-neden"><strong>Neden?</strong> {hata.neden}</p>
+</div>

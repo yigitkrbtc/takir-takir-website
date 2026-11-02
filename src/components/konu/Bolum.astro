@@ -1,0 +1,10 @@
+---
+// Numaralı ders bölümü. id, sayfa içi bağlantı ve "bu derste" yolu için.
+import type {Bolum} from '../../lib/bolumler';
+interface Props { b: Bolum }
+const {b} = Astro.props;
+---
+<section class="bolum" id={b.id} aria-labelledby={`b-${b.id}`}>
+  <div class="bolum-baslik"><span class="bolum-no" aria-hidden="true">{b.no}</span><h2 id={`b-${b.id}`}>{b.baslik}</h2></div>
+  <slot />
+</section>

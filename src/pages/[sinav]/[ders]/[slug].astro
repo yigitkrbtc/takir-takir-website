@@ -1,42 +1,48 @@
 ---
-import {getCollection} from 'astro:content';
+// Konu sayfası: bölüm sırası src/lib/bolumler.ts, her bölüm kendi bileşeninde (src/components/konu/).
 import Base from '../../../layouts/Base.astro';
 import Metin from '../../../components/Metin.astro';
 import TerimPenceleri from '../../../components/TerimPenceleri.astro';
+import Bolum from '../../../components/konu/Bolum.astro';
+import Gorsel from '../../../components/konu/Gorsel.astro';
+import KuralKart from '../../../components/konu/KuralKart.astro';
+import NedenListe from '../../../components/konu/NedenListe.astro';
+import HataKart from '../../../components/konu/HataKart.astro';
+import Sorular from '../../../components/konu/Sorular.astro';
+import VideoKart from '../../../components/konu/VideoKart.astro';
+import DersSonu from '../../../components/konu/DersSonu.astro';
+import Kaynaklar from '../../../components/konu/Kaynaklar.astro';
 import Tahmin from '../../../components/islands/Tahmin.tsx';
-import Tepkime from '../../../components/islands/Tepkime.tsx';
 import Ornek from '../../../components/islands/Ornek.tsx';
 import Kartlar from '../../../components/islands/Kartlar.tsx';
-import {HESAPLAR, SITE_ADI, konuUrl} from '../../../lib/site';
+import {tumKonular, ogYolu} from '../../../lib/konular';
+import {konuBolumleri} from '../../../lib/bolumler';
+import {SITE_ADI} from '../../../lib/site';
 import {kirinti, konuJsonld} from '../../../lib/seo';
+import {dersYolu, konuUrl, sinavYolu} from '../../../konu/yol';
+import type {Konu} from '../../../konu/schema';
 import '../../../styles/ada.css';
 import '../../../styles/konu.css';
 
 export async function getStaticPaths() {
-  const hepsi = await getCollection('konu');
-  return hepsi.map((e) => ({params: {sinav: e.data.sinav.toLowerCase(), ders: e.data.dersSlug, slug: e.data.slug}, props: {k: e.data, hepsi: hepsi.map((x) => x.data)}}));
+  const hepsi = await tumKonular();
+  return hepsi.map((k) => ({params: {sinav: k.sinav.toLowerCase(), ders: k.dersSlug, slug: k.slug}, props: {k, hepsi}}));
 }
 
-const {k, hepsi} = Astro.props;
+const {k, hepsi} = Astro.props as {k: Konu; hepsi: Konu[]};
 const site = Astro.site!;
 const adlar = k.terimler.map((t) => t.ad);
-const sinavYol = `/${k.sinav.toLowerCase()}/`;
-const dersYol = `${sinavYol}${k.dersSlug}/`;
+const bolumler = konuBolumleri(k);
+const b = Object.fromEntries(bolumler.map((x) => [x.id, x]));
 const kirintiOgeleri = [
   {ad: SITE_ADI, yol: '/'},
-  {ad: k.sinav, yol: sinavYol},
-  {ad: `${k.sinav} ${k.ders}`, yol: dersYol},
+  {ad: k.sinav, yol: sinavYolu(k.sinav)},
+  {ad: `${k.sinav} ${k.ders}`, yol: dersYolu(k)},
   {ad: k.konu, yol: konuUrl(k)},
 ];
-const kaynaklar = k.iddialar.filter((d) => d.durum === 'dogru');
-const bagli = (ids: string[]) => hepsi.filter((x) => ids.includes(x.id));
-const onBilgi = bagli(k.onBilgi);
-const sonraki = bagli(k.sonraki);
-const hesap = HESAPLAR[k.sinav];
-const tarih = new Date(k.guncelleme).toLocaleDateString('tr-TR', {day: 'numeric', month: 'long', year: 'numeric'});
 ---
 
-<Base baslik={`${k.baslik} | ${SITE_ADI}`} aciklama={k.ozet} jsonld={[...konuJsonld(site, k), kirinti(site, kirintiOgeleri)]} ilerleme>
+<Base baslik={`${k.baslik} | ${SITE_ADI}`} aciklama={k.ozet} jsonld={[...konuJsonld(site, k), kirinti(site, kirintiOgeleri)]} gorsel={ogYolu(k)} tur="article" ilerleme>
   <article class="kap">
     <nav class="kirinti" aria-label="Konum">
       <ol>
@@ -54,111 +60,25 @@ const tarih = new Date(k.guncelleme).toLocaleDateString('tr-TR', {day: 'numeric'
       <h1>{k.konu}<span class="h1-alt">{k.altBaslik}</span></h1>
       <p class="ozet"><Metin metin={k.ozet} terimler={adlar} /></p>
       <ol class="yol" aria-label="Bu derste">
-        <li><a href="#tahmin">Tahmin et</a></li>
-        <li><a href="#gor">Gör</a></li>
-        <li><a href="#kural">Kural</a></li>
-        <li><a href="#ornek">Örnek</a></li>
-        <li><a href="#hata">Sık hata</a></li>
-        <li><a href="#kartlar">Kendini test et</a></li>
+        {bolumler.map((x) => <li><a href={`#${x.id}`}>{x.yol}</a></li>)}
       </ol>
     </header>
 
-    <section class="bolum" id="tahmin" aria-labelledby="b1">
-      <div class="bolum-baslik"><span class="bolum-no">1</span><h2 id="b1">Önce tahmin et</h2></div>
-      <Tahmin client:visible {...k.tahmin} />
-    </section>
-
-    <section class="bolum" id="gor" aria-labelledby="b2">
-      <div class="bolum-baslik"><span class="bolum-no">2</span><h2 id="b2">Gör: kabuğun içinde ne oluyor?</h2></div>
-      <Tepkime client:visible baslik={k.gorsel.baslik} adimlar={k.gorsel.adimlar} />
-      <p class="ince kucuk ipucu-alt">Mavi kutular yüklü iyonlar, yeşil kutular gaz. Köşedeki sayı yükü gösterir.</p>
-    </section>
-
-    <section class="bolum" id="kural" aria-labelledby="b3">
-      <div class="bolum-baslik"><span class="bolum-no">3</span><h2 id="b3">Kural</h2></div>
-      <div class="kart kural">
-        <p class="kural-cumle">{k.kural.cumle}</p>
-        <p class="kural-formul formul">{k.kural.formul}</p>
-        <dl class="parcalar">
-          {k.kural.parcalar.map((p) => (
-            <div>
-              <dt class="formul">{p.ifade}</dt>
-              <dd>{p.anlam}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-    </section>
-
-    <section class="bolum" id="neden" aria-labelledby="b4">
-      <div class="bolum-baslik"><span class="bolum-no">4</span><h2 id="b4">Neden böyle?</h2></div>
-      <div class="neden">
-        {k.neden.map((n) => (
-          <div class="neden-oge">
-            <h3>{n.baslik}</h3>
-            <p><Metin metin={n.metin} terimler={adlar} /></p>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <section class="bolum" id="ornek" aria-labelledby="b5">
-      <div class="bolum-baslik"><span class="bolum-no">5</span><h2 id="b5">Çözümlü örnek</h2></div>
-      <Ornek client:visible {...k.ornek} />
-    </section>
-
-    <section class="bolum" id="hata" aria-labelledby="b6">
-      <div class="bolum-baslik"><span class="bolum-no">6</span><h2 id="b6">Sık yapılan hata</h2></div>
-      <div class="hata">
-        <div class="hata-satir yanlis"><span class="hata-ikon" aria-hidden="true">✗</span><div><strong>Yanlış</strong><p>{k.sikHata.yanlis}</p></div></div>
-        <div class="hata-satir dogru"><span class="hata-ikon" aria-hidden="true">✓</span><div><strong>Doğru</strong><p><Metin metin={k.sikHata.dogru} terimler={adlar} /></p></div></div>
-        <p class="hata-neden"><strong>Neden?</strong> {k.sikHata.neden}</p>
-      </div>
-    </section>
-
-    <section class="bolum" id="kartlar" aria-labelledby="b7">
-      <div class="bolum-baslik"><span class="bolum-no">7</span><h2 id="b7">Kendini test et</h2></div>
+    <Bolum b={b.tahmin}><Tahmin client:visible {...k.tahmin} devam={{href: `#${b.gor.id}`, metin: 'Nasıl olduğunu gör ↓'}} /></Bolum>
+    <Bolum b={b.gor}><Gorsel gorsel={k.gorsel} /></Bolum>
+    <Bolum b={b.kural}><KuralKart kural={k.kural} /></Bolum>
+    <Bolum b={b.neden}><NedenListe neden={k.neden} terimler={adlar} /></Bolum>
+    <Bolum b={b.ornek}><Ornek client:visible {...k.ornek} /></Bolum>
+    <Bolum b={b.hata}><HataKart hata={k.sikHata} terimler={adlar} /></Bolum>
+    <Bolum b={b.kartlar}>
       <p class="ince">Kartı çevir, ne kadar bildiğini işaretle. Bilmediğin kartlar yakında tekrar gelir, bildiklerin daha seyrek.</p>
       <Kartlar client:visible konuId={k.id} kartlar={k.kartlar} />
-    </section>
+    </Bolum>
+    <Bolum b={b.sorular}><Sorular sorular={k.sorular} /></Bolum>
 
-    <section class="bolum" id="video" aria-labelledby="b8">
-      <div class="kart video-kart">
-        <div>
-          <h2 id="b8">Bu konunun kısa videosu</h2>
-          {k.medya.youtube ? (
-            <p class="ince">60 saniyede aynı konu.</p>
-          ) : (
-            <p class="ince">Video yakında {hesap.ad} hesabında{k.medya.seriNo ? ` (TUZAK #${k.medya.seriNo})` : ''}.</p>
-          )}
-        </div>
-        <div class="hesap-linkleri">
-          {hesap.tiktok && <a class="dugme" href={hesap.tiktok} rel="me">TikTok</a>}
-          {hesap.youtube && <a class="dugme" href={hesap.youtube} rel="me">YouTube</a>}
-          {hesap.instagram && <a class="dugme" href={hesap.instagram} rel="me">Instagram</a>}
-        </div>
-      </div>
-    </section>
-
-    {(onBilgi.length > 0 || sonraki.length > 0) && (
-      <nav class="bolum bagli" aria-label="Bağlantılı konular">
-        {onBilgi.map((x) => <a class="kart bagli-kart" href={konuUrl(x)}><span class="ince kucuk">Önce bunu bil</span>{x.konu}</a>)}
-        {sonraki.map((x) => <a class="kart bagli-kart" href={konuUrl(x)}><span class="ince kucuk">Sırada</span>{x.konu}</a>)}
-      </nav>
-    )}
-
-    <section class="bolum kaynaklar" aria-labelledby="b9">
-      <h2 id="b9">Kaynaklar ve doğrulama</h2>
-      <p class="ince kucuk">Bu sayfadaki {k.iddialar.length} kilit bilgi tek tek kontrol edildi. Denklemler atom ve yük dengesi için kodla hesaplandı. Son güncelleme: <time datetime={k.guncelleme}>{tarih}</time>.</p>
-      <ul>
-        {kaynaklar.map((d) => (
-          <li>
-            <span>{d.metin}</span>
-            {d.kaynak ? <a href={d.kaynak.url} rel="noopener">{d.kaynak.ad}</a> : <span class="ince">denklem dengesi hesaplandı</span>}
-          </li>
-        ))}
-      </ul>
-    </section>
+    <VideoKart k={k} />
+    <DersSonu k={k} hepsi={hepsi} />
+    <Kaynaklar k={k} />
   </article>
   <TerimPenceleri terimler={k.terimler} />
 </Base>

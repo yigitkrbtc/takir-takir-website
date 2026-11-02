@@ -1,0 +1,14 @@
+---
+import Metin from '../Metin.astro';
+import type {Konu} from '../../konu/schema';
+interface Props { neden: Konu['neden']; terimler: string[] }
+const {neden, terimler} = Astro.props;
+---
+<div class="neden">
+  {neden.map((n) => (
+    <div class="neden-oge">
+      <h3>{n.baslik}</h3>
+      <p><Metin metin={n.metin} terimler={terimler} /></p>
+    </div>
+  ))}
+</div>

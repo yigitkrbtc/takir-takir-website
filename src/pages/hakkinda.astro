@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import {ILETISIM, SITE_ACIKLAMA, SITE_ADI} from '../lib/site';
+import {kirinti, kurulus, sayfa} from '../lib/seo';
+import '../styles/duz.css';
+
+const site = Astro.site!;
+const baslik = `Hakkında ve yöntem | ${SITE_ADI}`;
+const aciklama = 'Takır Takır nedir, konular nasıl anlatılır ve her bilgi nasıl doğrulanır.';
+---
+<Base baslik={baslik} aciklama={aciklama} jsonld={[sayfa(site, '/hakkinda/', 'Hakkında ve yöntem', aciklama, 'AboutPage'), kurulus(site), kirinti(site, [{ad: SITE_ADI, yol: '/'}, {ad: 'Hakkında', yol: '/hakkinda/'}])]}>
+  <article class="kap duz">
+    <h1>Hakkında ve yöntem</h1>
+    <p class="ozet">{SITE_ACIKLAMA}</p>
+
+    <h2>Kimin için?</h2>
+    <p>YKS'ye hazırlanan, konuyu ezberlemek yerine mantığını anlamak isteyen lise öğrencileri için. Sayfalar telefondan okunmak üzere tasarlandı. Her konu birkaç dakikalık bir derstir.</p>
+
+    <h2>Bir ders nasıl ilerler?</h2>
+    <ol>
+      <li><strong>Önce tahmin et.</strong> Ders bir soruyla başlar. Yanlış tahmin etmek de işe yarar: önce tahmin edip sonra öğrenen daha iyi hatırlar.</li>
+      <li><strong>Gör.</strong> Konu adım adım oynatılan bir görselle anlatılır (tepkime, grafik, harita).</li>
+      <li><strong>Kural ve neden.</strong> Kural tek cümle ve formülle verilir, sonra nereden geldiği gösterilir.</li>
+      <li><strong>Çözümlü örnek ve sık hata.</strong> Önce sen denersin, çözüm adım adım açılır. Öğrencilerin en sık düştüğü yanılgı ayrıca düzeltilir.</li>
+      <li><strong>Kendini test et.</strong> Flash kartlar aralıklı tekrarla çalışır: bilmediğin kart yakında tekrar gelir, bildiğin daha seyrek.</li>
+    </ol>
+
+    <h2 id="yontem">Bilgiler nasıl doğrulanır?</h2>
+    <ul>
+      <li>Her konu tek bir kaynak dosyadan üretilir. Site ve videolar aynı dosyayı kullanır, bu yüzden ikisi birbiriyle çelişmez.</li>
+      <li>Bir sayfada en çok 8 kilit bilgi vardır: kural, formül, sayı, tarih, örnek sorunun cevabı ve sık hata.</li>
+      <li>Kimyasal denklemler atom ve yük dengesi için kodla hesaplanır. Dengesiz bir denklem varsa site yayınlanmaz.</li>
+      <li>Diğer kilit bilgilerin her biri güvenilir bir kaynaktan birebir alıntıyla kontrol edilir: MEB ve OGM Materyal, ders kitapları, ÖSYM, TDK, LibreTexts, Britannica ve benzerleri. Kaynaklar her sayfanın sonunda listelenir.</li>
+      <li>Doğrulanamayan ya da şüpheli bir bilgi varsa sayfa yayınlanmaz.</li>
+      <li>Metinler yapay zekâ desteğiyle hazırlanır. Yayın kararı bu kontrollerden geçmeye bağlıdır.</li>
+    </ul>
+
+    <h2>Hata gördün mü?</h2>
+    <p>
+      {ILETISIM ? <>Bize <a href={`mailto:${ILETISIM}`}>{ILETISIM}</a> adresinden yaz. Düzeltilen sayfanın güncelleme tarihi değişir.</> : 'Sosyal medya hesaplarımızdan yazabilirsin. Düzeltilen sayfanın güncelleme tarihi değişir.'}
+    </p>
+
+    <h2>Bağımsızlık</h2>
+    <p>TYT ve AYT, ÖSYM'nin sınavlarıdır. {SITE_ADI} ÖSYM ya da MEB ile bağlantılı değildir.</p>
+  </article>
+</Base>

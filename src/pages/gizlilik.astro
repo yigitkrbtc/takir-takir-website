@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import {ILETISIM, SITE_ADI} from '../lib/site';
+import {kirinti, sayfa} from '../lib/seo';
+import '../styles/duz.css';
+
+const site = Astro.site!;
+const aciklama = 'Takır Takır hesap açtırmaz, çerez kullanmaz. İlerlemen yalnız senin tarayıcında saklanır.';
+const guncelleme = '2026-11-02';
+---
+<Base baslik={`Gizlilik | ${SITE_ADI}`} aciklama={aciklama} jsonld={[sayfa(site, '/gizlilik/', 'Gizlilik', aciklama), kirinti(site, [{ad: SITE_ADI, yol: '/'}, {ad: 'Gizlilik', yol: '/gizlilik/'}])]}>
+  <article class="kap duz">
+    <h1>Gizlilik</h1>
+    <p class="ozet">{aciklama}</p>
+
+    <h2>Ne saklanır, nerede?</h2>
+    <p>Siteyi kullanmak için hesap açman gerekmez. Ad, e-posta ya da telefon numarası istemiyoruz. Şunlar yalnız senin tarayıcında (localStorage) saklanır, bize gönderilmez:</p>
+    <ul>
+      <li>Seçtiğin tema (açık ya da koyu).</li>
+      <li>Flash kart ilerlemen: hangi kartı bildiğin ve ne zaman tekrar geleceği.</li>
+      <li>Kaç gün üst üste çalıştığın.</li>
+    </ul>
+    <p>Bu bilgileri silmek için tarayıcının site verilerini temizlemen yeterli.</p>
+
+    <h2>Çerez ve ölçüm</h2>
+    <p>Çerez kullanmıyoruz ve reklam izleyicisi yok. Ziyaret sayısını ölçmeye başlarsak çerezsiz bir araç kullanacağız ve bu sayfayı güncelleyeceğiz.</p>
+
+    <h2>Barındırma</h2>
+    <p>Site Cloudflare üzerinde yayınlanır. Her web sunucusunda olduğu gibi, güvenlik ve hizmetin çalışması için teknik kayıtlar (ör. IP adresi) Cloudflare tarafından kısa süre tutulabilir.</p>
+
+    <h2>Dış bağlantılar</h2>
+    <p>Kaynaklar listesindeki bağlantılar ve sosyal medya hesapları başka sitelere gider. O sitelerin kendi gizlilik kuralları geçerlidir.</p>
+
+    <h2>Haklar ve iletişim</h2>
+    <p>Kişisel veri toplamadığımız için silinecek ya da düzeltilecek bir kaydımız da yok. {ILETISIM ? <>Soruların için: <a href={`mailto:${ILETISIM}`}>{ILETISIM}</a>.</> : 'Soruların için sosyal medya hesaplarımızdan yazabilirsin.'}</p>
+    <p class="ince kucuk">Son güncelleme: <time datetime={guncelleme}>2 Kasım 2026</time></p>
+  </article>
+</Base>

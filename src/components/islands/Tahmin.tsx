@@ -1,9 +1,9 @@
 import {useState} from 'react';
 
-type Props = {soru: string; secenekler: string[]; dogru: number; aciklama: string};
+type Props = {soru: string; secenekler: string[]; dogru: number; aciklama: string; devam?: {href: string; metin: string}};
 
 // Ders başlamadan tahmin: yanlış cevap serbest, merak ve hatırlama için (ön test etkisi).
-export default function Tahmin({soru, secenekler, dogru, aciklama}: Props) {
+export default function Tahmin({soru, secenekler, dogru, aciklama, devam}: Props) {
   const [secim, setSecim] = useState<number | null>(null);
   const bitti = secim !== null;
   return (
@@ -25,7 +25,7 @@ export default function Tahmin({soru, secenekler, dogru, aciklama}: Props) {
       {bitti ? (
         <div className={`geri-bildirim ${secim === dogru ? 'iyi' : 'kotu'}`} role="status">
           <strong>{secim === dogru ? 'Doğru tahmin.' : `Doğrusu ${String.fromCharCode(65 + dogru)}.`}</strong> {aciklama}
-          <a className="devam" href="#gor">Nasıl olduğunu gör ↓</a>
+          {devam && <a className="devam" href={devam.href}>{devam.metin}</a>}
         </div>
       ) : (
         <p className="ince kucuk ipucu">Yanlış tahmin etmek de işe yarar: önce tahmin edip sonra öğrenen daha iyi hatırlar.</p>

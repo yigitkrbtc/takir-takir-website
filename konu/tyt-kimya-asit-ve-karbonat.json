@@ -112,6 +112,12 @@
     ],
     "puf": "Soruda karbonat (CO₃) ya da bikarbonat (HCO₃) görürsen, çıkan gaz CO₂'dir."
   },
+  "sorular": [
+    {"soru": "Asit ile karbonat tepkimesinde hangi gaz çıkar?", "cevap": "Karbondioksit (CO₂) çıkar. Asit + karbonat → tuz + su + karbondioksit. Gazın karbonu ve oksijeni karbonattan gelir."},
+    {"soru": "Yumurta kabuğu sirkede neden köpürür?", "cevap": "Kabuktaki kalsiyum karbonat, sirkedeki asetik asitle tepkimeye girer ve CO₂ kabarcıkları oluşur. Oluşan kalsiyum asetat suda çözündüğü için kabuk zamanla kaybolur."},
+    {"soru": "Karbonik asit neden hemen ayrışır?", "cevap": "Karbonik asit (H₂CO₃) dayanıksızdır. Suda hızla su ve karbondioksite ayrışır. Tepkimede görülen kabarcıklar bu karbondioksittir."},
+    {"soru": "Asit karbonatla tepkimeye girince neden hidrojen gazı çıkmaz?", "cevap": "Hidrojen gazı, asit aktif bir metalle tepkimeye girince çıkar. Karbonatla tepkimede asidin hidrojeni suya bağlanır, bu yüzden hidrojen gazı oluşmaz."}
+  ],
   "kartlar": [
     {"id": "k1", "tur": "formul", "on": "Asit + karbonat → ?", "arka": "Tuz + su + karbondioksit (CO₂)."},
     {"id": "k2", "tur": "hata", "on": "Asitle her tepkimede hidrojen gazı mı çıkar?", "arka": "Hayır. H₂, asit aktif metalle tepkimeye girince çıkar. Asit karbonatla tepkimeye girince çıkan gaz CO₂'dir."},
@@ -181,5 +187,6 @@
   ],
   "medya": {"seriNo": 4},
   "surum": 1,
+  "yayin": "2026-11-02",
   "guncelleme": "2026-11-02"
 }

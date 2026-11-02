@@ -29,6 +29,8 @@ export const Iddia = z.object({
   not: z.string().optional(),
 });
 
+const Tarih = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+
 export const KonuSchema = z.object({
   id: z.string(),
   sinav: z.enum(['TYT', 'AYT']),
@@ -61,12 +63,15 @@ export const KonuSchema = z.object({
     adimlar: z.array(z.object({metin: z.string(), formul: z.string().optional()})).min(2).max(6),
     puf: z.string().optional(),
   }),
+  // Öğrencinin arama motoruna ya da yapay zekâya sorduğu sorular, kısa ve tek başına alıntılanabilir cevaplarla (SSS bölümü + FAQPage).
+  sorular: z.array(z.object({soru: z.string().max(120), cevap: z.string().max(320)})).min(3).max(6),
   kartlar: z.array(z.object({id: z.string(), on: z.string().max(90), arka: z.string().max(220), tur: z.enum(['tanim', 'formul', 'hata', 'uygulama'])})).min(6).max(12),
   terimler: z.array(z.object({ad: z.string(), formul: z.string().optional(), tanim: z.string().max(160)})),
   iddialar: z.array(Iddia).max(8),
   medya: z.object({seriNo: z.number().int().positive().optional(), youtube: z.string().optional(), tiktok: z.string().optional(), instagram: z.string().optional()}).default({}),
   surum: z.number().int().positive(),
-  guncelleme: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  yayin: Tarih, // ilk yayın (datePublished)
+  guncelleme: Tarih, // son içerik değişikliği (dateModified, sitemap lastmod)
 });
 
 export type Konu = z.infer<typeof KonuSchema>;

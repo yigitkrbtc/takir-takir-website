@@ -5,11 +5,10 @@
 .yol { list-style: none; display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 8px; margin: 18px -16px 0; padding-left: 16px; padding-right: 16px; scrollbar-width: none; counter-reset: y; }
 .yol::-webkit-scrollbar { display: none; }
 .yol li { flex: none; counter-increment: y; }
-.yol a { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 8px; border-radius: 999px; background: var(--kart); border: 1px solid var(--cizgi); font-size: 14.5px; font-weight: 600; text-decoration: none; color: var(--yazi-2); }
+.yol a { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 14px 0 10px; border-radius: 999px; background: var(--kart); border: 1px solid var(--cizgi); font-size: 14.5px; font-weight: 600; text-decoration: none; color: var(--yazi-2); }
 .yol a::before { content: counter(y); display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--bg-2); font-size: 12px; font-weight: 800; color: var(--yazi-3); }
 .yol a:hover { color: var(--yazi); border-color: var(--yazi-3); }
 
-.ipucu-alt { margin-top: 10px; }
 
 /* Kural kartı */
 .kural { text-align: center; border-color: var(--vurgu); background: radial-gradient(120% 90% at 50% 0%, var(--vurgu-zemin), transparent 70%), var(--kart); padding: 28px 18px; }
@@ -56,3 +55,15 @@
   .yol { margin: 18px 0 0; padding-left: 0; padding-right: 0; flex-wrap: wrap; }
   .bagli { grid-template-columns: 1fr 1fr; }
 }
+
+/* SSS */
+.sorular { display: grid; gap: 12px; }
+.soru-oge { padding: 16px 18px; border-radius: var(--r); background: var(--kart); border: 1px solid var(--cizgi); }
+.soru-oge h3 { font-size: 18px; margin-bottom: 6px; }
+.soru-oge p { color: var(--yazi-2); }
+
+/* Ders sonu */
+.ders-sonu h2 { font-size: 22px; margin-bottom: 14px; }
+.bagli-kart { min-height: 72px; justify-content: center; }
+.bagli-kart.vurgulu { border-color: var(--vurgu); }
+.bagli-kart:hover { border-color: var(--yazi-3); }

@@ -82,6 +82,18 @@ export function denge(denklem: string): {dengeli: boolean; neden?: string} {
 
 export const yukYaz = (n: number) => (n === 0 ? '0' : `${n > 0 ? '+' : '−'}${Math.abs(n)}`);
 
+// Görsel kitler için: "2CH₃COO⁻" → {katsayi: 2, govde: "CH₃COO⁻", yuk: -1}
+export function turBilgisi(f: string): {katsayi: number; govde: string; yuk: number} {
+  const km = f.match(/^(\d+)\s*/);
+  const govde = km ? f.slice(km[0].length) : f;
+  const {katsayi, yuk} = turAyristir(f);
+  return {katsayi, govde, yuk};
+}
+
+// Oda koşullarında gaz olan, sık geçen türler (görselde yeşil kutu ve kabarcık)
+const GAZLAR = new Set(['CO₂', 'H₂', 'O₂', 'N₂', 'Cl₂', 'NH₃', 'SO₂', 'NO₂', 'CH₄']);
+export const gazMi = (f: string) => GAZLAR.has(turBilgisi(f).govde.replace(/[↑]|\(g\)$/g, ''));
+
 // Terim sözlüğü: ad → formül. Konu paketindeki terim formülleri buradakiyle aynı olmalı.
 // Metinde geçen her ad, paketin terimler listesinde olmalı (öğrenci tanımı görmeden ilerlemesin).
 export const SOZLUK: Record<string, string> = {

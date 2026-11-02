@@ -1,0 +1,9 @@
+---
+// Görsel kit kaydı: gorsel.kit → etkileşimli ada. Yeni kit: şemaya varyant (src/konu/schema.ts) + buraya bir satır.
+// Astro, hidrasyon için bileşenin statik içe aktarılmasını ister; bu yüzden eşleme bir tablo değil, açık dallar.
+import Tepkime from '../islands/Tepkime.tsx';
+import type {Konu} from '../../konu/schema';
+interface Props { gorsel: Konu['gorsel'] }
+const {gorsel} = Astro.props;
+---
+{gorsel.kit === 'tepkime' && <Tepkime client:visible adimlar={gorsel.adimlar} />}

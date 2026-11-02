@@ -1,0 +1,14 @@
+---
+// SSS: her soru açık metin (katlanmaz). Arama ve AI motorları soru-cevabı doğrudan alıntılayabilsin.
+import type {Konu} from '../../konu/schema';
+interface Props { sorular: Konu['sorular'] }
+const {sorular} = Astro.props;
+---
+<div class="sorular">
+  {sorular.map((s) => (
+    <div class="soru-oge">
+      <h3>{s.soru}</h3>
+      <p>{s.cevap}</p>
+    </div>
+  ))}
+</div>

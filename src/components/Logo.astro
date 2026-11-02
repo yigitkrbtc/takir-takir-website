@@ -1,0 +1,9 @@
+---
+// Logo: iki klavye tuşu + "TakırTakır" (ikinci kelime sarı). İşaret çizimi src/lib/marka.ts'te.
+import {isaretSvg} from '../lib/marka';
+import {SITE_ADI} from '../lib/site';
+---
+<a class="logo" href="/" aria-label={`${SITE_ADI} ana sayfa`}>
+  <Fragment set:html={isaretSvg(46)} />
+  <span class="logo-yazi" aria-hidden="true">Takır<span>Takır</span></span>
+</a>

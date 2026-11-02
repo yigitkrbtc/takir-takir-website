@@ -1,14 +1,15 @@
 ---
-import {getCollection} from 'astro:content';
 import Base from '../../../layouts/Base.astro';
-import {DERSLER, SITE_ADI, konuUrl} from '../../../lib/site';
+import {DERSLER, SITE_ADI} from '../../../lib/site';
+import {tumKonular} from '../../../lib/konular';
+import {dersYolu, konuUrl, sinavYolu} from '../../../konu/yol';
 import {kirinti} from '../../../lib/seo';
 import type {Konu} from '../../../konu/schema';
 import '../../../styles/hub.css';
 
 // Yalnız en az bir konusu olan ders için sayfa üretilir (boş sayfa yok).
 export async function getStaticPaths() {
-  const hepsi = (await getCollection('konu')).map((e) => e.data);
+  const hepsi = await tumKonular();
   const yollar = new Map<string, Konu[]>();
   for (const k of hepsi) {
     const a = `${k.sinav}/${k.dersSlug}`;
@@ -23,12 +24,12 @@ const {sinav, konular} = Astro.props;
 const ders = DERSLER[sinav].find((d) => d.slug === konular[0].dersSlug)?.ad ?? konular[0].ders;
 const uniteler = [...new Set(konular.map((k) => k.unite))];
 const site = Astro.site!;
-const yol = `/${sinav.toLowerCase()}/${konular[0].dersSlug}/`;
+const yol = dersYolu(konular[0]);
 ---
 
-<Base baslik={`${sinav} ${ders} konuları: anlatım, flash kart, çözümlü örnek | ${SITE_ADI}`} aciklama={`${sinav} ${ders} konuları: ${konular.map((k) => k.konu).join(', ')}. Her konu etkileşimli ders, çözümlü örnek ve flash kartlarla.`} jsonld={[kirinti(site, [{ad: SITE_ADI, yol: '/'}, {ad: sinav, yol: `/${sinav.toLowerCase()}/`}, {ad: `${sinav} ${ders}`, yol}])]}>
+<Base baslik={`${sinav} ${ders} konuları: anlatım, flash kart, çözümlü örnek | ${SITE_ADI}`} aciklama={`${sinav} ${ders} konuları: ${konular.map((k) => k.konu).join(', ')}. Her konu etkileşimli ders, çözümlü örnek ve flash kartlarla.`} jsonld={[kirinti(site, [{ad: SITE_ADI, yol: '/'}, {ad: sinav, yol: sinavYolu(sinav)}, {ad: `${sinav} ${ders}`, yol}])]}>
   <div class="kap genis">
-    <nav class="kirinti" aria-label="Konum"><ol><li><a href="/">{SITE_ADI}</a></li><li><a href={`/${sinav.toLowerCase()}/`}>{sinav}</a></li></ol></nav>
+    <nav class="kirinti" aria-label="Konum"><ol><li><a href="/">{SITE_ADI}</a></li><li><a href={sinavYolu(sinav)}>{sinav}</a></li></ol></nav>
     <header class="hub-bas">
       <span class="rozet vurgu">{sinav} · {ders}</span>
       <h1>{sinav} {ders} konuları</h1>

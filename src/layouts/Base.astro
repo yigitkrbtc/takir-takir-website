@@ -1,6 +1,12 @@
 ---
+import '@fontsource-variable/plus-jakarta-sans/wght.css';
+import jakartaLatin from '@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url';
 import '../styles/global.css';
-import {SITE_ADI} from '../lib/site';
+import Logo from '../components/Logo.astro';
+import {ILETISIM, SITE_ADI} from '../lib/site';
+import {ogYolu} from '../lib/konular';
+import {ANAHTAR} from '../lib/depo';
+import {YAYIN} from '../lib/ortam';
 
 interface Props {
   baslik: string;
@@ -8,9 +14,15 @@ interface Props {
   jsonld?: object[];
   ilerleme?: boolean;
   noindex?: boolean;
+  gorsel?: string; // paylaşım kartı yolu, varsayılan genel kart
+  tur?: 'website' | 'article';
 }
-const {baslik, aciklama, jsonld = [], ilerleme = false, noindex = false} = Astro.props;
+const {baslik, aciklama, jsonld = [], ilerleme = false, noindex = false, gorsel = ogYolu(), tur = 'website'} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const gorselUrl = new URL(gorsel, Astro.site);
+// Önizlemede (SITE_URL yok) her sayfa noindex: workers.dev adresi indekslenmesin.
+const indeksDisi = noindex || !YAYIN;
+const yil = new Date().getFullYear();
 ---
 
 <!doctype html>
@@ -21,54 +33,72 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{baslik}</title>
     <meta name="description" content={aciklama} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex" />}
+    {indeksDisi && <meta name="robots" content="noindex" />}
     <meta name="theme-color" content="#0e1117" />
-    <meta property="og:type" content="article" />
+    <link rel="preload" href={jakartaLatin} as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content={tur} />
     <meta property="og:site_name" content={SITE_ADI} />
     <meta property="og:title" content={baslik} />
     <meta property="og:description" content={aciklama} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="tr_TR" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={gorselUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={baslik} />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <script is:inline>
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
+    <script is:inline define:vars={{anahtar: ANAHTAR.tema}}>
       try {
-        const t = localStorage.getItem('tema');
-        if (t) document.documentElement.dataset.tema = t;
+        const t = localStorage.getItem(anahtar);
+        if (t) document.documentElement.dataset.tema = JSON.parse(t);
       } catch {}
     </script>
     {jsonld.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
   </head>
   <body>
+    <a class="atla" href="#icerik">İçeriğe geç</a>
     <header class="ust">
       <div class="kap genis">
-        <a class="logo" href="/" aria-label={`${SITE_ADI} ana sayfa`}><span class="logo-im">TT</span>{SITE_ADI}</a>
+        <Logo />
         <nav aria-label="Ana menü">
           <a href="/tyt/">TYT</a>
           <a href="/ayt/">AYT</a>
           <button class="tema-dugme" id="tema" type="button" aria-label="Açık ya da koyu tema">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg>
           </button>
         </nav>
       </div>
       {ilerleme && <div class="ilerleme" id="ilerleme" aria-hidden="true"></div>}
     </header>
-    <main>
+    <main id="icerik">
       <slot />
     </main>
     <footer class="alt">
-      <div class="kap genis">
-        <p><strong>{SITE_ADI}</strong>: YKS konularını kısa videolar, etkileşimli dersler ve flash kartlarla anlatır. Her bilgi kaynağıyla kontrol edilir.</p>
-        <p>TYT ve AYT, ÖSYM'nin sınavlarıdır. Bu site ÖSYM ya da MEB ile bağlantılı değildir.</p>
+      <div class="kap genis alt-izgara">
+        <div>
+          <Logo />
+          <p>YKS konularını kısa videolar, etkileşimli dersler ve flash kartlarla anlatır. Her kilit bilgi kaynağıyla kontrol edilir.</p>
+        </div>
+        <nav aria-label="Site">
+          <a href="/tyt/">TYT konuları</a>
+          <a href="/ayt/">AYT konuları</a>
+          <a href="/hakkinda/">Hakkında ve yöntem</a>
+          <a href="/gizlilik/">Gizlilik</a>
+          {ILETISIM && <a href={`mailto:${ILETISIM}`}>İletişim</a>}
+        </nav>
+        <p class="kucuk alt-not">© {yil} {SITE_ADI}. TYT ve AYT, ÖSYM'nin sınavlarıdır. Bu site ÖSYM ya da MEB ile bağlantılı değildir.</p>
       </div>
     </footer>
-    <script is:inline>
+    <script is:inline define:vars={{anahtar: ANAHTAR.tema}}>
       document.getElementById('tema')?.addEventListener('click', () => {
         const d = document.documentElement;
-        const acik = d.dataset.tema !== 'acik';
-        d.dataset.tema = acik ? 'acik' : 'koyu';
-        try { localStorage.setItem('tema', d.dataset.tema); } catch {}
+        d.dataset.tema = d.dataset.tema !== 'acik' ? 'acik' : 'koyu';
+        try { localStorage.setItem(anahtar, JSON.stringify(d.dataset.tema)); } catch {}
       });
       const bar = document.getElementById('ilerleme');
       if (bar) {

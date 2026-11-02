@@ -1,25 +1,14 @@
 import {useEffect, useRef, useState} from 'react';
 
+import {gazMi, turBilgisi, yukYaz} from '../../konu/kimya';
+
 type Tur = {f: string; ad?: string};
 type Adim = {baslik: string; sol: Tur[]; sag: Tur[]; not: string; yukGoster?: boolean; denklem?: boolean};
-type Props = {baslik: string; adimlar: Adim[]};
-
-const UST: Record<string, string> = {'¹': '1', '²': '2', '³': '3', '⁴': '4'};
-// "2CH₃COO⁻" → {katsayi: 2, govde: "CH₃COO⁻", yuk: -1}
-function oku(f: string) {
-  const km = f.match(/^(\d+)/);
-  const katsayi = km ? Number(km[1]) : 1;
-  const govde = km ? f.slice(km[1].length) : f;
-  const ym = govde.match(/([¹²³⁴]?)([⁺⁻])$/);
-  const yuk = ym ? (ym[2] === '⁺' ? 1 : -1) * (ym[1] ? Number(UST[ym[1]]) : 1) : 0;
-  return {katsayi, govde, yuk};
-}
-const yukYaz = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${-n}` : '0');
-const gaz = (f: string) => /^\d*(CO₂|H₂|O₂)$/.test(f);
+type Props = {adimlar: Adim[]};
 
 function Kutu({t, gecikme, kabarcik}: {t: Tur; gecikme: number; kabarcik?: boolean}) {
-  const {katsayi, govde, yuk} = oku(t.f);
-  const sinif = yuk !== 0 ? 'iyon' : gaz(t.f) ? 'gaz' : '';
+  const {katsayi, govde, yuk} = turBilgisi(t.f);
+  const sinif = yuk !== 0 ? 'iyon' : gazMi(t.f) ? 'gaz' : '';
   return (
     <div className={`tur ${sinif}`} style={{animationDelay: `${gecikme}ms`}}>
       {katsayi > 1 && <span className="katsayi">{katsayi}×</span>}
@@ -35,8 +24,9 @@ function Kutu({t, gecikme, kabarcik}: {t: Tur; gecikme: number; kabarcik?: boole
   );
 }
 
-// Tepkimeyi adım adım gösterir: iyonlar, yükler, ok, ürünler. Görsel kitin site sürümü.
-export default function Tepkime({baslik, adimlar}: Props) {
+// Tepkime kiti: iyonlar, yükler, ok, ürünler adım adım. Başlık bölüm başlığındadır (Gorsel.astro).
+// Ayrıştırma src/konu/kimya.ts'ten gelir: kontrol betiği hangi kuralla doğruluyorsa görsel de onunla çizer.
+export default function Tepkime({adimlar}: Props) {
   const [i, setI] = useState(0);
   const [oynuyor, setOynuyor] = useState(false);
   const zaman = useRef<number | undefined>(undefined);
@@ -52,15 +42,18 @@ export default function Tepkime({baslik, adimlar}: Props) {
     return () => window.clearTimeout(zaman.current);
   }, [oynuyor, i, adimlar.length]);
 
-  const yukToplam = (ts: Tur[]) => ts.map((t) => oku(t.f)).filter((x) => x.yuk !== 0);
+  const yukToplam = (ts: Tur[]) => ts.map((t) => turBilgisi(t.f)).filter((x) => x.yuk !== 0);
   const solYuk = yukToplam(a.sol);
   const toplam = solYuk.reduce((s, x) => s + x.katsayi * x.yuk, 0);
 
   return (
     <div className="kart tepkime">
       <div className="tepkime-ust">
-        <h3>{baslik}</h3>
         <span className="ince kucuk">Adım {i + 1} / {adimlar.length}</span>
+        <span className="lejant kucuk" aria-label="Renkler">
+          <span className="lj iyon">iyon</span>
+          <span className="lj gaz">gaz</span>
+        </span>
       </div>
       <ol className="adim-noktalari" aria-label="Adımlar">
         {adimlar.map((x, j) => (
@@ -93,7 +86,7 @@ export default function Tepkime({baslik, adimlar}: Props) {
             {a.sag.map((t, j) => (
               <div className="tur-kap" key={t.f + j}>
                 {j > 0 && <span className="arti-isaret">+</span>}
-                <Kutu t={t} gecikme={(denklem ? 700 : 150) + j * 160} kabarcik={denklem && gaz(t.f)} />
+                <Kutu t={t} gecikme={(denklem ? 700 : 150) + j * 160} kabarcik={denklem && gazMi(t.f)} />
               </div>
             ))}
           </div>

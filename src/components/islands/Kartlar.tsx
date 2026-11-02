@@ -1,37 +1,16 @@
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useState} from 'react';
+import {ANAHTAR, oku, yaz} from '../../lib/depo';
+import {bugunuEkle, seriUzunlugu, sonrakiKayit, vadesiGelen, type Cevap, type KartKaydi} from '../../lib/tekrar';
 
 type Kart = {id: string; on: string; arka: string; tur: string};
 type Props = {konuId: string; kartlar: Kart[]};
-type Kayit = Record<string, {kutu: number; sonraki: string}>;
+type Kayit = Record<string, KartKaydi>;
 
-// Aralıklı tekrar (Leitner): bilinen kart daha seyrek, bilinmeyen hemen tekrar gelir.
-const ARALIK = [0, 1, 3, 7, 16]; // gün
-const bugun = () => new Date().toISOString().slice(0, 10);
-const gunEkle = (n: number) => new Date(Date.now() + n * 864e5).toISOString().slice(0, 10);
 const TUR_AD: Record<string, string> = {tanim: 'Tanım', formul: 'Formül', hata: 'Sık hata', uygulama: 'Uygula'};
 
-function oku<T>(anahtar: string, varsayilan: T): T {
-  try {
-    const v = localStorage.getItem(anahtar);
-    return v ? (JSON.parse(v) as T) : varsayilan;
-  } catch {
-    return varsayilan;
-  }
-}
-function yaz(anahtar: string, v: unknown) {
-  try { localStorage.setItem(anahtar, JSON.stringify(v)); } catch {}
-}
-
-// Çalışılan günler → kesintisiz gün serisi
-function seriHesapla(gunler: string[]) {
-  const set = new Set(gunler);
-  let n = 0;
-  for (let d = 0; set.has(gunEkle(-d)); d++) n++;
-  return n;
-}
-
+// Flash kartlar + aralıklı tekrar. Bilinen kart daha seyrek, bilinmeyen hemen tekrar gelir (kurallar: lib/tekrar.ts).
 export default function Kartlar({konuId, kartlar}: Props) {
-  const anahtar = `kart:${konuId}`;
+  const anahtar = ANAHTAR.kart(konuId);
   const [kayit, setKayit] = useState<Kayit>({});
   const [sira, setSira] = useState<Kart[]>(kartlar);
   const [cevrildi, setCevrildi] = useState(false);
@@ -42,30 +21,26 @@ export default function Kartlar({konuId, kartlar}: Props) {
   useEffect(() => {
     const k = oku<Kayit>(anahtar, {});
     setKayit(k);
-    const vadesi = kartlar.filter((x) => !k[x.id] || k[x.id].sonraki <= bugun());
+    const vadesi = vadesiGelen(kartlar, k, new Date());
     setSira(vadesi.length ? vadesi : kartlar);
-    setSeri(seriHesapla(oku<string[]>('seri', [])));
+    setSeri(seriUzunlugu(oku<string[]>(ANAHTAR.seri, []), new Date()));
     setHazir(true);
   }, [anahtar, kartlar]);
 
   const kart = sira[0];
   const toplam = kartlar.length;
   const bitti = hazir && !kart;
-  const ustune = useMemo(() => toplam - sira.length, [toplam, sira.length]);
+  const ustune = toplam - sira.length;
 
-  function cevap(c: 'bildi' | 'emin' | 'bilmedi') {
+  function cevap(c: Cevap) {
     if (!kart) return;
-    const eski = kayit[kart.id]?.kutu ?? 0;
-    const kutu = c === 'bildi' ? Math.min(ARALIK.length - 1, eski + 1) : c === 'emin' ? eski : 0;
-    const yeni = {...kayit, [kart.id]: {kutu, sonraki: gunEkle(c === 'bilmedi' ? 0 : Math.max(1, ARALIK[kutu]))}};
+    const simdi = new Date();
+    const yeni = {...kayit, [kart.id]: sonrakiKayit(kayit[kart.id], c, simdi)};
     setKayit(yeni);
     yaz(anahtar, yeni);
-    const gunler = oku<string[]>('seri', []);
-    if (!gunler.includes(bugun())) {
-      const g = [...gunler, bugun()].slice(-60);
-      yaz('seri', g);
-      setSeri(seriHesapla(g));
-    }
+    const gunler = bugunuEkle(oku<string[]>(ANAHTAR.seri, []), simdi);
+    yaz(ANAHTAR.seri, gunler);
+    setSeri(seriUzunlugu(gunler, simdi));
     setSonuc((s) => ({...s, [c]: s[c] + 1}));
     setCevrildi(false);
     // bilinmeyen kart destenin sonuna döner, bu oturumda tekrar gelir

@@ -86,13 +86,22 @@ export const yukYaz = (n: number) => (n === 0 ? '0' : `${n > 0 ? '+' : '−'}${M
 export function turBilgisi(f: string): {katsayi: number; govde: string; yuk: number} {
   const km = f.match(/^(\d+)\s*/);
   const govde = km ? f.slice(km[0].length) : f;
-  const {katsayi, yuk} = turAyristir(f);
-  return {katsayi, govde, yuk};
+  try {
+    const {katsayi, yuk} = turAyristir(f);
+    return {katsayi, govde, yuk};
+  } catch {
+    // Formül değilse (ör. "ısı") görsel çökmez; doğruluk build'de denge() ile denetlenir
+    return {katsayi: km ? Number(km[1]) : 1, govde, yuk: 0};
+  }
 }
+
+// "2CO₂(g)↑" → "CO₂": katsayı, ok ve faz eki olmadan
+const sade = (f: string) => turBilgisi(f).govde.replace(/[↑↓]/g, '').replace(/\s*\((aq|s|l|g|k|suda)\)\s*$/i, '').trim();
 
 // Oda koşullarında gaz olan, sık geçen türler (görselde yeşil kutu ve kabarcık)
 const GAZLAR = new Set(['CO₂', 'H₂', 'O₂', 'N₂', 'Cl₂', 'NH₃', 'SO₂', 'NO₂', 'CH₄']);
-export const gazMi = (f: string) => GAZLAR.has(turBilgisi(f).govde.replace(/[↑]|\(g\)$/g, ''));
+// Gaz: listede ya da açıkça (g) / ↑ ile işaretli
+export const gazMi = (f: string) => f.includes('↑') || /\(g\)\s*$/i.test(f) || GAZLAR.has(sade(f));
 
 // Terim sözlüğü: ad → formül. Konu paketindeki terim formülleri buradakiyle aynı olmalı.
 // Metinde geçen her ad, paketin terimler listesinde olmalı (öğrenci tanımı görmeden ilerlemesin).

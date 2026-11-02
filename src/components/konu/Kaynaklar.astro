@@ -4,7 +4,7 @@ import type {Konu} from '../../konu/schema';
 interface Props { k: Konu }
 const {k} = Astro.props;
 const dogrular = k.iddialar.filter((d) => d.durum === 'dogru');
-const tarih = (t: string) => new Date(t).toLocaleDateString('tr-TR', {day: 'numeric', month: 'long', year: 'numeric'});
+const tarih = (t: string) => new Date(t).toLocaleDateString('tr-TR', {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'}); // build makinesinin saat dilimi günü kaydırmasın
 ---
 <section class="bolum kaynaklar" id="kaynaklar" aria-labelledby="b-kaynak">
   <h2 id="b-kaynak">Kaynaklar ve doğrulama</h2>

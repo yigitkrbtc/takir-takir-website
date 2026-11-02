@@ -26,3 +26,12 @@ test('görsel kit yardımcıları', () => {
   assert.equal(gazMi('H₂O'), false);
   assert.equal(gazMi('H₂CO₃'), false);
 });
+
+test('görsel kit: okunamayan metin çökertmez, faz eki ve ok tanınır', () => {
+  assert.deepEqual(turBilgisi('ısı'), {katsayi: 1, govde: 'ısı', yuk: 0});
+  assert.equal(gazMi('ısı'), false);
+  assert.equal(gazMi('CO₂ (g)'), true);
+  assert.equal(gazMi('2CO₂(g)'), true);
+  assert.equal(gazMi('X↑'), true);
+  assert.equal(gazMi('H₂O(l)'), false);
+});

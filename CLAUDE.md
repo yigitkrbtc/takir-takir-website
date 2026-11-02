@@ -2,6 +2,14 @@
 
 Takır Takır sitesi: YKS (TYT/AYT) konuları için etkileşimli dersler, flash kartlar ve kaynaklı bilgi. Hedef okur orta düzey bir lise öğrencisi, telefondan.
 
+## Çalışma ilkeleri (Yiğit, 2026-11-02)
+Bu repoda her iş şu altı gözle yapılır: pazarlama uzmanı, SEO ve GEO uzmanı, uzman yazılım mimarı, uzman yazılımcı, UI/UX tasarımcısı, QA mühendisi.
+- Site her zaman SEO ve GEO uyumludur. Bir değişiklik görünürlüğü düşürüyorsa (metni JS'e taşımak, yapılandırılmış veriyi bozmak, canonical/sitemap/robots kırmak, özeti ve kaynakları gizlemek) yapılmaz.
+- Kod modülerdir: her sorumluluk tek yerde (okuma `yukle.ts`, kural `denetle.ts`, adres `yol.ts`, depolama `depo.ts`, marka `marka.ts`). Aynı mantık iki yerde yazılmaz.
+- Her iş profesyonel biter: tip kontrolü temiz, isimler ve yorumlar Türkçe ve anlamlı, geçici çözüm bırakılmaz.
+- QA gibi test edilir: yeni kural ya da fonksiyon testle gelir, bozuk girdiyle de denenir. Arayüz değişikliği Playwright ile 390 px ve 1280 px, koyu ve açık temada, konsol hatası ve 48 px altı dokunma hedefi olmadan doğrulanır.
+- Token az harcanır: yalnız gereken dosya ve satır okunur, çıktı kısa tutulur, aynı dosya tekrar okunmaz.
+
 ## Yapı
 - `konu/<id>.json`: konu paketi, tek kaynak. Site (ve ileride video, uygulama) buradan okur. Şema: `src/konu/schema.ts`.
 - `src/konu/`: sayfadan bağımsız, Node'da da çalışan çekirdek (import'lar `.ts` uzantılı).
@@ -19,7 +27,9 @@ Takır Takır sitesi: YKS (TYT/AYT) konuları için etkileşimli dersler, flash 
 
 ## Kurallar
 - Her sayfanın başındaki `ozet` tek başına alıntılanabilir olmalı (≤ 320 karakter, ≤ 25 kelime/cümle). `sorular` (3-6): öğrencinin gerçekten sorduğu soru + tek başına alıntılanabilir cevap.
-- Kilit iddia ≤ 8: kural, formül, sayı, tarih, cevap, sık hata. Denklem ve hesap kodla (`yontem: hesap`), gerisi beyaz liste kaynaktan 1 kaynak + birebir alıntı. `belirsiz`/`yanlis` varsa yayın yok.
+- Kilit iddia ≤ 8: kural, formül, sayı, tarih, cevap, sık hata. Denklem ve hesap kodla (`yontem: hesap`), gerisi beyaz liste kaynaktan 1 kaynak + birebir alıntı. `dogru` dışında bir durum (`bekliyor`, `belirsiz`, `yanlis`) varsa yayın yok.
+- Tarihler: paketteki tarih UTC'de biçimlenir; kullanıcının günü (seri, tekrar) yerel takvim günüdür.
+- Dosya yolları çalışma klasörüne bağlı olmaz (`import.meta.url`, `fileURLToPath`, Node çözümlemesi).
 - Metinde geçen her kimyasal ad `terimler` listesinde, formülü `SOZLUK` ile aynı.
 - İçeriği olmayan ders sayfası üretilmez; içeriği olmayan sınav sayfası `noindex` ve sitemap dışı.
 - `SITE_URL` verilmezse önizleme: her sayfa `noindex`, robots.txt sitemap göstermez. Yayın ortamında (alan adı) `SITE_URL` build değişkeni olarak verilir.

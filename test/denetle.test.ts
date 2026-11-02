@@ -34,9 +34,21 @@ test('metinde geçip terimlerde olmayan kimyasal ad yakalanır', () => {
   assert.ok(r.hatalar.some((h) => h.includes('"sodyum hidroksit"')));
 });
 
-test('belirsiz iddia yayını durdurur', () => {
-  const r = bozuk((k) => (k.iddialar[0].durum = 'belirsiz'));
-  assert.ok(r.hatalar.some((h) => h.includes('yayınlanamaz')));
+test('doğrulanmamış iddia (belirsiz, yanlış, bekliyor) yayını durdurur', () => {
+  for (const durum of ['belirsiz', 'yanlis', 'bekliyor'] as const) {
+    const r = bozuk((k) => (k.iddialar[0].durum = durum));
+    assert.ok(r.hatalar.some((h) => h.includes(`${durum}: yayınlanamaz`)), durum);
+  }
+});
+
+test('çalışma klasöründen bağımsız okur', () => {
+  const once = process.cwd();
+  process.chdir('/');
+  try {
+    assert.equal(hamPaketler().length, paketler.length);
+  } finally {
+    process.chdir(once);
+  }
 });
 
 test('olmayan bağlantı ve çakışan kısa link yakalanır', () => {

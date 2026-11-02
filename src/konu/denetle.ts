@@ -51,8 +51,8 @@ export function denetle(paketler: {dosya: string; k: Konu}[]): Sonuc {
     for (const d of k.iddialar) {
       if (d.yontem === 'kaynak' && !d.kaynak) h(`iddia ${d.id}: kaynak yöntemi seçilmiş ama kaynak yok`);
       if (d.yontem === 'hesap' && !d.hesap) h(`iddia ${d.id}: hesap yöntemi seçilmiş ama hesap yok`);
-      if (d.durum === 'yanlis' || d.durum === 'belirsiz') h(`iddia ${d.id} ${d.durum}: yayınlanamaz`);
-      if (d.durum === 'bekliyor') u(`iddia ${d.id} teyit bekliyor`);
+      // Yalnız doğrulanmış iddia yayınlanır: bekliyor da durdurur (sayfa "kontrol edildi" diyor).
+      if (d.durum !== 'dogru') h(`iddia ${d.id} ${d.durum}: yayınlanamaz`);
     }
 
     // 4) Okunabilirlik: uzun cümle uyarısı (özet, neden, sık hata, SSS cevapları)

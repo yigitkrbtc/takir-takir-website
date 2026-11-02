@@ -1,13 +1,15 @@
 // Paylaşım kartı (Open Graph, 1200×630): build sırasında satori ile SVG, sharp ile PNG.
 // Yazı satori'de yola çevrilir; sonuç build makinesinin fontlarına bağlı değildir.
 import {readFileSync} from 'node:fs';
-import {resolve} from 'node:path';
+import {createRequire} from 'node:module';
+import {dirname, join} from 'node:path';
 import satori from 'satori';
 import sharp from 'sharp';
 import {isaretSvg, RENK} from './marka';
 
-const fontDosyasi = (alt: string, kalinlik: number) =>
-  readFileSync(resolve(process.cwd(), `node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-${alt}-${kalinlik}-normal.woff`));
+// Paket Node çözümlemesiyle bulunur (çalışma klasörüne bağlı değil)
+const FONT_DIZINI = join(dirname(createRequire(import.meta.url).resolve('@fontsource/plus-jakarta-sans/package.json')), 'files');
+const fontDosyasi = (alt: string, kalinlik: number) => readFileSync(join(FONT_DIZINI, `plus-jakarta-sans-${alt}-${kalinlik}-normal.woff`));
 
 let fontlar: {name: string; data: Buffer; weight: 600 | 800; style: 'normal'}[] | undefined;
 const fontlariYukle = () =>

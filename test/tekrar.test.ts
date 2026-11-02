@@ -25,3 +25,9 @@ test('gün serisi', () => {
   assert.deepEqual(bugunuEkle(['2026-11-02'], gun), ['2026-11-02']);
   assert.deepEqual(bugunuEkle([], gun), ['2026-11-02']);
 });
+
+test('gün yerel takvime göre (UTC değil)', () => {
+  const geceYarisi = new Date(2026, 10, 3, 0, 30); // yerel 3 Kasım 00:30
+  assert.equal(sonrakiKayit(undefined, 'bilmedi', geceYarisi).sonraki, '2026-11-03');
+  assert.equal(seriUzunlugu(['2026-11-02', '2026-11-03'], geceYarisi), 2);
+});
